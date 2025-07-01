@@ -1,0 +1,354 @@
+###EXECUTING BASIC MONGO DB COMMANDS FROM TERMINAL
+
+1### CREATING MONGO SHELL
+sw900b4_janitha@itg-HP-Z6-G4-Workstation:~$ mongosh
+
+
+2### CREATING A DATABASE
+
+test> use student_data
+
+switched to db student_data
+
+3### CREATING A COLLECTION
+
+student_data> db.createCollection("students")
+{ ok: 1 }
+
+4### INSERTING RECORDS ONE BY ONE
+
+student_data> db.students.insertOne({ _id: 1, name: 'Alice', age: 25, city: 'Delhi'})
+
+student_data> db.students.insertOne({_id:2,name:"Bob",age:26,city:["Delhi","Mumbai"]})
+{ acknowledged: true, insertedId: 2 }
+
+student_data> db.students.insertOne({_id:3,name:"Cathy",age:26,city:"Mumbai"})
+{ acknowledged: true, insertedId: 3 }
+
+
+student_data> db.students.insertOne({_id:4,name:"Ann",age:25,city:"Lucknow",Address:{HouseNo:1234,Street:"Gandhi Street"}})
+{ acknowledged: true, insertedId: 4 }
+
+
+5### DISPLAYING COLLECTION
+
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Delhi' },
+  { _id: 2, name: 'Bob', age: 26, city: [ 'Delhi', 'Mumbai' ] },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  }
+]
+
+6### DISPLAYING DOCUMENT WITH city:'Mumbai'
+
+student_data> db.students.find({city:'Mumbai'})
+[
+  { _id: 2, name: 'Bob', age: 26, city: [ 'Delhi', 'Mumbai' ] },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' }
+]
+
+
+7##### INSERTING MULTIPLE RECORDS
+
+student_data> db.students.insertMany([{_id:5,name:"Robert",age:25,city:"Srinagar",Address:{HouseNo:34,Street:"11th Street"}},{_id:6,name:"Sam",age:25,city:"Kolkata"},{_id:7,name:"Nobel",age:24,city:"Kolkata"}])
+{ acknowledged: true, insertedIds: { '0': 5, '1': 6, '2': 7 } }
+
+
+CHECKING---
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Delhi' },
+  { _id: 2, name: 'Bob', age: 26, city: [ 'Delhi', 'Mumbai' ] },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  { _id: 6, name: 'Sam', age: 25, city: 'Kolkata' },
+  { _id: 7, name: 'Nobel', age: 24, city: 'Kolkata' }
+]
+
+
+8###DELETING A ROW
+
+student_data> db.students.deleteOne({city:'Mumbai'})
+{ acknowledged: true, deletedCount: 1 }
+
+CHECKING---
+
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Delhi' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  { _id: 6, name: 'Sam', age: 25, city: 'Kolkata' },
+  { _id: 7, name: 'Nobel', age: 24, city: 'Kolkata' }
+]
+
+9###DELETING MULTIPLE ROWS
+
+student_data> db.students.deleteMany({city:'Kolkata'})
+{ acknowledged: true, deletedCount: 2 }
+
+CHECKING---
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Delhi' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  }
+]
+
+10###INSERTING MANY
+student_data> db.students.insertMany([{_id:8,name:"Tan",age:25,city:"Srinagar",Address:{HouseNo:87,Street:"Street30"}},{_id:9,name:"Nova",age:25,city:["Srinagar","Kolkata"]},{_id:10,name:"John",age:25,city:"Kolkata"}])
+{ acknowledged: true, insertedIds: { '0': 8, '1': 9, '2': 10 } }
+
+CHECKING---
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Delhi' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  {
+    _id: 8,
+    name: 'Tan',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 87, Street: 'Street30' }
+  },
+  { _id: 9, name: 'Nova', age: 25, city: [ 'Srinagar', 'Kolkata' ] },
+  { _id: 10, name: 'John', age: 25, city: 'Kolkata' }
+]
+
+
+11###UPDATING A DOCUMENT
+student_data> db.students.updateOne({name:'Alice'},{$set:{city:"Kolkata"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+CHECKING---
+
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Kolkata' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  {
+    _id: 8,
+    name: 'Tan',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 87, Street: 'Street30' }
+  },
+  { _id: 9, name: 'Nova', age: 25, city: [ 'Srinagar', 'Kolkata' ] },
+  { _id: 10, name: 'John', age: 25, city: 'Kolkata' }
+]
+
+12###UPDATING ONE DOCUMENT
+
+student_data> db.students.updateOne({city:'Kolkata'},{$set:{city:"Calcutta"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+CHECKING----
+
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Calcutta' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  {
+    _id: 8,
+    name: 'Tan',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 87, Street: 'Street30' }
+  },
+  { _id: 9, name: 'Nova', age: 25, city: [ 'Srinagar', 'Kolkata' ] },
+  { _id: 10, name: 'John', age: 25, city: 'Kolkata' }
+]
+
+13####UPDATING MANY
+
+student_data> db.students.updateMany({city:'Kolkata'},{$set:{city:"Calcutta"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+
+CHECKING---
+student_data> db.students.find()
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Calcutta' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  {
+    _id: 8,
+    name: 'Tan',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 87, Street: 'Street30' }
+  },
+  { _id: 9, name: 'Nova', age: 25, city: 'Calcutta' },
+  { _id: 10, name: 'John', age: 25, city: 'Calcutta' }
+]
+
+
+
+
+14###SORTING
+
+student_data> db.students.find().sort({city:1})
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Calcutta' },
+  { _id: 9, name: 'Nova', age: 25, city: 'Calcutta' },
+  { _id: 10, name: 'John', age: 25, city: 'Calcutta' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 5,
+    name: 'Robert',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 34, Street: '11th Street' }
+  },
+  {
+    _id: 8,
+    name: 'Tan',
+    age: 25,
+    city: 'Srinagar',
+    Address: { HouseNo: 87, Street: 'Street30' }
+  }
+]
+
+15###PRINTING RECORD USING LIMIT
+student_data> db.students.find().limit(1)
+[ { _id: 1, name: 'Alice', age: 25, city: 'Calcutta' } ]
+
+student_data> db.students.find().limit(3)
+[
+  { _id: 1, name: 'Alice', age: 25, city: 'Calcutta' },
+  { _id: 3, name: 'Cathy', age: 26, city: 'Mumbai' },
+  {
+    _id: 4,
+    name: 'Ann',
+    age: 25,
+    city: 'Lucknow',
+    Address: { HouseNo: 1234, Street: 'Gandhi Street' }
+  }
+]
+
+
